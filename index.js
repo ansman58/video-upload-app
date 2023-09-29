@@ -1,22 +1,9 @@
-const express = require("express");
-const { imageController } = require("./src/controllers/image.controller");
-const multer = require("multer");
-const path = require("path");
 require("dotenv").config();
+const express = require("express");
+const { videoController } = require("./src/controllers/video.controller");
+const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: (res, file, cb) => {
-    cb(null, "images");
-  },
-  filename: (req, file, cb) => {
-
-    console.log(req.files);
-    console.log(file);
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({ dest: "uploads/", storage });
+const upload = multer({ dest: "/upload" });
 
 const app = express();
 
@@ -29,7 +16,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.post("/upload", upload.single("files"), imageController);
+app.post("/upload", upload.single("file"), videoController);
 
 app.listen(port, () => {
   console.log(`Server is up on port http://localhost:${port}`);
